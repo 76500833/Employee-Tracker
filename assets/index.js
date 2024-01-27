@@ -35,6 +35,7 @@ const promptUser = () => {
                     if (err) throw err;
                     results.forEach(role => {
                         console.log(`ID: ${role.id}, Title: ${role.title}, Salary: ${role.salary}, Department ID: ${role.department_id}`);
+                        
                     });
                 });
             }
