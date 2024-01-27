@@ -14,7 +14,7 @@ const questions = [
         type: 'list',
         name: 'select',
         message: 'What would you like to do? ',
-        choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add and employee', 'update an employee(s) role'],
+        choices: ['view all departments', 'view all roles', 'view all employees', 'add a department', 'add a role', 'add an employee', 'update an employee(s) role'],
     }
 ];
 
@@ -65,6 +65,73 @@ const promptUser = () => {
             }
             //! Add a role
             if (answers.select === 'add a role') {
+                inquirer.prompt([{
+                    type: 'input',
+                    name: 'roleName',
+                    message: 'What is the name of the role you wish to add?',
+                },
+                {
+                    type: 'input',
+                    name: 'salary',
+                    message: 'What is the salary for this role?',
+                },
+                {
+                    type: 'input',
+                    name: 'departmentId',
+                    message: 'What is the department ID for this role?',
+                }]
+                )
+                    .then((answers) => {
+
+
+                        connection.query('INSERT INTO role SET ?', {
+                            title: answers.roleName,
+                            salary: answers.salary,
+                            department_id: answers.departmentId
+                        }, function (err, res) {
+                            if (err) throw err;
+                            console.log(`Succesfully added ${answers.roleName} role!`);
+                        });
+                    })
+            }
+            if (answers.select === 'add an employee') {
+                inquirer.prompt([{
+                    type: 'input',
+                    name: 'employeeName',
+                    message: 'What is the first name of the employee you wish to add?',
+                },
+                {
+                    type: 'input',
+                    name: 'employeeLastName',
+                    message: 'What is the last name of the employee you wish to add?',
+                },
+                {
+                    type: 'input',
+                    name: 'role_id',
+                    message: 'What is the role ID of the employee?',
+                },
+                {
+                    type: 'input',
+                    name: 'manager_id',
+                    message: 'What is the employees manager ID?',
+                }
+
+                ])
+                    .then((answers) => {
+
+
+                        connection.query('INSERT INTO employee SET ?', {
+                            first_name: answers.employeeName,
+                            last_name: answers.employeeLastName,
+                            role_id: answers.role_id,
+                            manager_id: answers.manager_id,
+                        }, function (err, res) {
+                            if (err) throw err;
+                            console.log(`Succesfully added ${answers.employeeName} ${answers.employeeLastName} to the team!`);
+                        });
+                    })
+            }
+            if (answers.select === 'update an employee(s) role') {
                 inquirer.prompt([{
                     type: 'input',
                     name: 'roleName',
