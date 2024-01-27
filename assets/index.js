@@ -134,30 +134,22 @@ const promptUser = () => {
             if (answers.select === 'update an employee(s) role') {
                 inquirer.prompt([{
                     type: 'input',
-                    name: 'roleName',
-                    message: 'What is the name of the role you wish to add?',
+                    name: 'employeeToUpdate',
+                    message: 'What is the ID of the employee you wish to give a new role to?',
                 },
-                    {
-                        type: 'input',
-                        name: 'salary',
-                        message: 'What is the salary for this role?',
-                    },
-                    {
-                        type: 'input',
-                        name: 'departmentId',
-                        message: 'What is the department ID for this role?',
-                    }]
+                {
+                    type: 'input',
+                    name: 'newRole',
+                    message: 'What is their new role?',
+                }]
                 )
                     .then((answers) => {
 
-
-                        connection.query('INSERT INTO role SET ?', {
-                            title: answers.roleName,
-                            salary: answers.salary,
-                            department_id: answers.departmentId
-                        }, function (err, res) {
+                        connection.query('UPDATE employee SET role_id = ? WHERE id = ?', [answers.newRole, answers.employeeToUpdate], function (err, res) {
+                            
+                        
                             if (err) throw err;
-                            console.log(`Succesfully added ${answers.roleName} role!`);
+                            console.log(`Succesfully changed employee #${answers.employeeToUpdate}'s role!`);
                         });
                     })
             }
