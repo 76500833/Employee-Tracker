@@ -18,6 +18,7 @@ const questions = [
     }
 ];
 
+
 const promptUser = () => {
     inquirer.prompt(questions)
         .then((answers) => {
@@ -28,16 +29,22 @@ const promptUser = () => {
                         console.log(`ID: ${department.id}, Name: ${department.name}`);
                     });
                 });
-            
-            } if (answers.select === 'view all roles') {
+            } 
+            if (answers.select === 'view all roles') {
                 connection.query('SELECT * FROM role', function (err, results) {
                     if (err) throw err;
-                    //mysql2 returns results as an array of objects, where each object represents a row from the role table.
-                    //So we are giving a foreach access to this array of objects, calling it row, and saying for each row, print this out:
                     results.forEach(role => {
                         console.log(`ID: ${role.id}, Title: ${role.title}, Salary: ${role.salary}, Department ID: ${role.department_id}`);
-                })
-            });
+                    });
+                });
+            } 
+            if (answers.select === 'view all employees') {
+                connection.query('SELECT * FROM employee', function (err, results) {
+                    if (err) throw err;
+                    results.forEach(employee => {
+                        console.log(`ID: ${employee.id}, First Name: ${employee.first_name}, Last Name: ${employee.last_name}, Role ID: ${employee.role_id}, Manager ID: ${employee.manager_id}`);
+                    });
+                });
             }
             // Handle other choices here...
         });
@@ -46,13 +53,6 @@ const promptUser = () => {
 function init() {
     promptUser(questions)
 }
-
-
-
-
-
-
-
 
 // Function call to initialize app
 init();
